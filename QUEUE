@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+
+typedef struct NODE
+{
+    int data;
+    struct NODE *nxt;
+} queue;
+
+queue *createNode()
+{
+    queue *n = (queue *)malloc(sizeof(queue));
+    n->data = NULL;
+    n->nxt = NULL;
+
+    return n;
+}
+
+queue *qinsert(queue *head, int val)
+{
+    queue *tr = head;
+    queue *n = createNode();
+    n->data = val;
+    n->nxt = NULL;
+    if (head == NULL)
+        head = n;
+    else
+    {
+        while (tr->nxt != NULL)
+            tr = tr->nxt;
+        tr->nxt = n;
+    }
+    printf("\n\nValue inserted...");
+    return head;
+}
+
+queue *qdelete(queue *head)
+{
+    queue *tmp = head;
+    if (head == NULL)
+        printf("Link List is empty...\nFirst Node does not exist...");
+    else
+    {
+        printf("\nDeleted value is: %d\n", head->data);
+        head = head->nxt;
+        free(tmp);
+    }
+    return head;
+}
+
+int qpeek(queue *head)
+{
+    if (head == NULL)
+    {
+        printf("\nEmpty...");
+        return NULL;
+    }
+    else
+        return head->data;
+}
+
+void qchange(queue *head, int pos, int val)
+{
+    queue *tr = head;
+    int cnt = 1;
+    if (head == NULL)
+        printf("invalid position.../stack empty...");
+    else
+    {
+        while (cnt != pos && tr != NULL)
+        {
+            tr = tr->nxt;
+            cnt++;
+        }
+        if (tr == NULL)
+            printf("invalid position...");
+        else
+        {
+
+            tr->data = val;
+            printf("Value updated...");
+        }
+    }
+}
+
+void qdisplay(queue *head)
+{
+    queue *tr = head;
+    if (head == NULL)
+        printf("Empty...");
+    else
+    {
+        while (tr != NULL)
+        {
+            printf("%d", tr->data);
+            if (tr->nxt != NULL)
+                printf(" <- ");
+            tr = tr->nxt;
+        }
+    }
+}
+
+void main()
+{
+    int val, pos, ch;
+    queue *q = NULL;
+    // clrscr();
+
+    while (1)
+    {
+        // clrscr();
+        printf("\nQUEUE OPERATIONS");
+        printf("\n1. INSERT");
+        printf("\n2. DELETE");
+        printf("\n3. PEEK");
+        printf("\n4. CHANGE");
+        printf("\n5. DISPLAY");
+        printf("\n6. EXIT");
+        printf("\nEnter Option: ");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+        case 1:
+            printf("\nPlease Enter Value: ");
+            scanf("%d", &val);
+            q = qinsert(q, val);
+            break;
+        case 2:
+            q = qdelete(q);
+            break;
+        case 3:
+            val = qpeek(q);
+
+            if (val != NULL)
+                printf("\nFront value is: %d\n", val);
+            break;
+        case 4:
+            printf("\nPlease Enter Position: ");
+            scanf("%d", &pos);
+            printf("\nPlease Enter Value: ");
+            scanf("%d", &val);
+            qchange(q, pos, val);
+            break;
+        case 5:
+            qdisplay(q);
+            break;
+        case 6:
+            exit(0);
+            break;
+        default:
+            printf("\nPlease Enter proper option...");
+        }
+        getch();
+    }
+}
